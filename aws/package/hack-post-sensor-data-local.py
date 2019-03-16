@@ -14,11 +14,6 @@ db_name = "TheBigDatabase"
 def lambda_handler(event, context):
 
     # Get the current date and time in yy--mm-dd hours:minutes:second format
-    now = datetime.now()
-    now_str = now.strftime('%Y-%m-%d %H:%M:%S')
-    print("WOOOOOOOOOOOW")
-    print(now_str)
-    
 
     """
     This function fetches content from mysql RDS instance
@@ -28,17 +23,12 @@ def lambda_handler(event, context):
     conn = pymysql.connect(rds_host, port=3306, user=name, passwd=password, db=db_name, connect_timeout=2)
     print("Connected!")
     with conn.cursor() as cur:
-        cur.execute("""insert into SensorData (UserId, SensorId , SensorType , SensorReadings, TimeStamp) values( '%s', '%s', '%s', '%s', '%s')""" % (event['UserId'], event['SensorId'], event['SensorType'] , event['Readings'], now_str))
-        #cur.execute("""select * from test""")
+        cur.execute("""insert into SensorData (UserId, SensorId , SensorType , SensorReadings, TimeStamp) values( '%s', '%s', '%s', '%s', '%s')""" % (event['UserId'], event['SensorId'], event['SensorType'] , event['Readings'], event['TimeStamp']))
         conn.commit()
         cur.close()
-        # for row in cur:
-        #     result.append(list(row))
-        # print "Data from RDS..."
-        # print result
     
     # TODO implement
     return {
         'statusCode': 200,
-        'body': json.dumps('Data has been posted successfuly!')
+        'body': json.dumps('Bat GERGI, Data has been posted successfuly, Bat GERGI!')
     }

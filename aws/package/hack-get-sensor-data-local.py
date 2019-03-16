@@ -10,6 +10,15 @@ name = "admin"
 password = "adminadmin"
 db_name = "TheBigDatabase"
 
+def getSqlSelect(top, sensorType):
+    selectQuery = "select * from SensorData"
+    if sensorType != "":
+        selectQuery += " WHERE SensorType='" + sensorType + "'"
+    if top != 0:
+        selectQuery += " LIMIT " + str(top)
+        
+    return selectQuery
+
 
 def lambda_handler(event, context):
 
@@ -25,17 +34,31 @@ def lambda_handler(event, context):
     print("Before connection!")
     conn = pymysql.connect(rds_host, port=3306, user=name, passwd=password, db=db_name, connect_timeout=2)
     print("Connected!")
+    top = 0
+    sensorType = ''
+    
+    if 'top' in event:
+        top = event['top']
+    if 'SensorType' in event:
+        sensorType = event['SensorType']
+        
     with conn.cursor() as cur:
-        cur.execute("""select * from SensorData""")
+        #cur.execute("""select * from SensorData""")
+        sqlSelect = getSqlSelect(top, sensorType)
+        print("SqlSelect: " + sqlSelect)
+        cur.execute(sqlSelect)
         conn.commit()
         cur.close()
         for row in cur:
-            result.append(list(row))
+            temp_list = list(row)
+            curLine = temp_list[:-1]
+            curLine.append(str(temp_list[-1]))
+            result.append(curLine)
         print("Data from RDS...")
         print(result)
     
     # TODO implement
     return {
         'statusCode': 200,
-        'body': json.dumps('Data has been gotten successfuly!')
+        'body': json.dumps(result)
     }
