@@ -1,0 +1,1 @@
+zip -g function.zip hack-post-sensor-data-local.py && aws lambda update-function-code --function-name hack-post-sensor-data --zip-file fileb://function.zip
