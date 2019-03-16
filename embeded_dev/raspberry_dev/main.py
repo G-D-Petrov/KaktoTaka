@@ -1,4 +1,6 @@
 import serial
+import psycopg2
+from creds import creds
 
 def extract_value(message):
     temperature_measurment = '%00&'
@@ -58,17 +60,20 @@ def process_message(message):
     
     
 
-serZero = serial.Serial('/dev/ttyUSB0', 9600)
-serOne = serial.Serial('/dev/ttyUSB1', 9600)
+# serZero = serial.Serial('/dev/ttyUSB0', 9600)
+# serOne = serial.Serial('/dev/ttyUSB1', 9600)
 
-while 1:
-    if(serZero.inWaiting()> 0):
-        line = serZero.readline()
-        process_message(line)
-        ##print(line)
-    if(serOne.inWaiting()> 0):
-        line = serOne.readline()
-        process_message(line)
+# while 1:
+#     if(serZero.inWaiting()> 0):
+#         line = serZero.readline()
+#         process_message(line)
+#         ##print(line)
+#     if(serOne.inWaiting()> 0):
+#         line = serOne.readline()
+#         process_message(line)
         
-        
+conn_string = "host="+ creds.PGHOST +" port="+ "5432" +" dbname="+ creds.PGDATABASE +" user=" + creds.PGUSER \
++" password="+ creds.PGPASSWORD
+conn=psycopg2.connect(conn_string)
+print("Connected!")
         
