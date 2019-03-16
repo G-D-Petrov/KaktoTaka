@@ -1,0 +1,1 @@
+zip -g function.zip hack-delete-sensor-data-local.py && aws lambda update-function-code --function-name hack-delete-sensor-data --zip-file fileb://function.zip
