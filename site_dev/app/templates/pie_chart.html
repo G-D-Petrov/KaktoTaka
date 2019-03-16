@@ -1,0 +1,17 @@
+
+<!-- bar chart canvas element -->
+<!-- <canvas id="myChart" width="600" height="400"></canvas>
+<p id="pointSelected">Point selected:</p> -->
+<canvas id="myPieChart"></canvas>
+<script>
+    var pie_labels = [{% for item in context.pie_labels %}
+        "{{item}}",
+      {% endfor %}];
+    var pie_data = [{% for item in context.pie_data %}
+          {{item}},
+        {% endfor %}];
+    var pie_label = "{{ context.label }}"
+    // and so on for each variable
+    // it's important to import external script 
+    // after variables declaration, not before
+</script>
