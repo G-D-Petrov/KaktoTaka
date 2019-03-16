@@ -1,0 +1,1 @@
+zip -g function.zip hack-post-transactions.py && aws lambda update-function-code --function-name hack-post-transactions --zip-file fileb://function.zip

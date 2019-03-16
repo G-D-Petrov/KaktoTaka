@@ -10,13 +10,18 @@ name = "admin"
 password = "adminadmin"
 db_name = "TheBigDatabase"
 
-def getSqlSelect(top, sensorType):
+def getSqlSelect(top, filters):
     selectQuery = "select * from SensorData"
-    if sensorType != "":
-        selectQuery += " WHERE SensorType='" + sensorType + "'"
+    if len(filters) != 0:
+        selectQuery += " WHERE "
+        selectQuery += " " + filters[0][0] + "='" + filters[0][1] + "'"
+        
+        for i in range(1, len(filters)):
+            selectQuery += " AND " + filters[i][0] + "='" + filters[i][1] + "'"
+
     if top != 0:
         selectQuery += " LIMIT " + str(top)
-        
+
     return selectQuery
 
 
@@ -35,16 +40,18 @@ def lambda_handler(event, context):
     conn = pymysql.connect(rds_host, port=3306, user=name, passwd=password, db=db_name, connect_timeout=2)
     print("Connected!")
     top = 0
-    sensorType = ''
+    filters = list()
     
     if 'top' in event:
         top = event['top']
     if 'SensorType' in event:
-        sensorType = event['SensorType']
+        filters.append(('SensorType', event['SensorType']))
+    if 'UserId' in event:
+        filters.append(('UserId', event['UserId']))
         
     with conn.cursor() as cur:
         #cur.execute("""select * from SensorData""")
-        sqlSelect = getSqlSelect(top, sensorType)
+        sqlSelect = getSqlSelect(top, filters)
         print("SqlSelect: " + sqlSelect)
         cur.execute(sqlSelect)
         conn.commit()
