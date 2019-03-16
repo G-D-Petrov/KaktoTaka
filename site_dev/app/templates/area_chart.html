@@ -10,6 +10,7 @@
     var area_data = [{% for item in context.area_data %}
           {{item}},
         {% endfor %}];
+    var area_label = "{{ context.label }}"
     // and so on for each variable
     // it's important to import external script 
     // after variables declaration, not before

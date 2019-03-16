@@ -10678,9 +10678,7 @@ a:focus {
 }
 
 .bg-gradient-primary {
-  background-color: #4e73df;
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(10%, #4e73df), to(#224abe));
-  background-image: linear-gradient(180deg, #4e73df 10%, #224abe 100%);
+  background-color: pink;
   background-size: cover;
 }
 
@@ -11589,7 +11587,7 @@ a:focus {
 }
 
 .bg-login-image {
-  background: url("https://source.unsplash.com/K4mSJ7kc0As/600x800");
+  background: url("https://scontent.fsof4-1.fna.fbcdn.net/v/t1.15752-9/54278525_2307652849448175_172729308173828096_n.png?_nc_cat=101&_nc_ht=scontent.fsof4-1.fna&oh=21750653bc045de3127de4cccaa54885&oe=5D158274");
   background-position: center;
   background-size: cover;
 }
