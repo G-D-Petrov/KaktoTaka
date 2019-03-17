@@ -86,14 +86,14 @@ void loop()
 
 void printDevice()
 {
-  Serial.print("#01%");
+  Serial.print("|00|");
 }
 
 void printLightValues()
 {
   printDevice();
   int analogLightValue = analogRead(A1);
-  Serial.print("01&"); //Light
+  Serial.print("01|"); //Light
   Serial.println(analogLightValue);
 }
 
@@ -112,22 +112,22 @@ void printDistanceValues()
   distance= duration*0.034/2;
   //Prints the distance on the Serial Monitor
   printDevice();
-  Serial.print("02&"); //Distance
+  Serial.print("02|"); //Distance
   Serial.println(distance);
 }
 
 void printGasValues()
 {
    printDevice();
-   Serial.print("04&"); //LPG
+   Serial.print("04|"); //LPG
    Serial.print(MQGetGasPercentage(MQRead(MQ_PIN)/Ro,GAS_LPG) );
    Serial.print("\n");   
    printDevice();
-   Serial.print("05&"); // CO 
+   Serial.print("05|"); // CO 
    Serial.print(MQGetGasPercentage(MQRead(MQ_PIN)/Ro,GAS_CO) );
    Serial.print("\n");   
    printDevice();
-   Serial.print("06&"); //Smoke 
+   Serial.print("06|"); //Smoke 
    Serial.print(MQGetGasPercentage(MQRead(MQ_PIN)/Ro,GAS_SMOKE) );
    Serial.print("\n");
 }
@@ -136,22 +136,16 @@ void printTemperatureAndHumidityValues()
 {
   printDevice();
   int chk = DHT.read11(DHT11_PIN);
-  Serial.print("00&"); //Temperature
+  Serial.print("00|"); //Temperature
   Serial.println(DHT.temperature);
   printDevice();
-  Serial.print("03&"); //Humidity
+  Serial.print("03|"); //Humidity
   Serial.println(DHT.humidity);
 }
 
 void configureGasSensor()
 {
-  Serial.print("Calibrating...\n");                
-  Ro = MQCalibration(MQ_PIN);                       //Calibrating the sensor. Please make sure the sensor is in clean air                  
-  Serial.print("Calibration is done...\n"); 
-  Serial.print("Ro=");
-  Serial.print(Ro);
-  Serial.print("kohm");
-  Serial.print("\n");  
+	sensor is in clean air                    
 }
 
 void configureParktronic(){
@@ -180,7 +174,7 @@ float MQCalibration(int mq_pin)
  
   return val; 
 }
- 
+
 float MQRead(int mq_pin)
 {
   int i;

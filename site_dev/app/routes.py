@@ -36,8 +36,8 @@ def get_home():
     "area_data": area_data,
     "pie_labels": pie_labels,
     "pie_data": pie_data,
-    "monthly_earnings": "50000",
-    "annual_earnings": "500000",
+    "earnings": "0",
+    "cash": "0",
     "data_usage": "75",
     "sales_requests": "14",
     "label": "Distance Measurments",
@@ -45,6 +45,12 @@ def get_home():
   }
 
   return context
+
+def get_user_parichki_data():
+  r = requests.get('https://tus5jpx6z6.execute-api.eu-central-1.amazonaws.com/dev/users', data=json.dumps({"UserId": session['user']}), timeout=30)
+  json_new = json.loads(r.text)
+  data = ast.literal_eval(json_new['body'])
+  return data[0][1]
 
 def post_home():
   json_to_zdravko = {
@@ -59,7 +65,7 @@ def post_home():
   new_data = []
   labels = []
   count = 0
-  print(r.text)
+  # print(r.text)
   for d in ast.literal_eval(data):
     count += 1
     labels.append(count)
@@ -71,8 +77,15 @@ def post_home():
 @app.route("/", methods=['GET', 'POST'])
 def index():
   context = get_home()
+
   if request.method == 'POST':
     context['area_labels'], context['area_data'] = post_home()
+  try:
+    context['cash'] = get_user_parichki_data()  
+  except Exception as e:
+    context['cash'] = 2000
+    print(e)
+  context['earnings'] = round(context['cash'] - 2000, 2)
   
   return render_template('index.html', context=context)
 
